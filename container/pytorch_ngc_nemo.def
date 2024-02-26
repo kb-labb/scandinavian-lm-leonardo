@@ -1,0 +1,26 @@
+bootstrap: docker
+from: nvcr.io/nvidia/pytorch:23.07-py3
+
+%environment
+export LC_ALL=C
+
+%post
+pip3 list
+gcc --version
+
+pip3 install nltk
+pip3 install transformers
+pip3 install tokenizers
+pip3 install datasets
+pip3 install lm-dataformat
+pip3 install packaging
+pip3 install einops
+pip3 install ninja
+ninja --version
+echo $?
+MAX_JOBS=10 pip3 install flash-attn --no-build-isolation --upgrade --force-reinstall --no-deps
+
+cd /workspace
+git clone https://github.com/NVIDIA/NeMo
+cd NeMo
+pip3 install 'nemo_toolkit[nlp]'

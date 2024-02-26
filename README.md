@@ -57,3 +57,26 @@ However, it does not appear to be necessary to start an interactive session. You
 
 ## SLURM
 
+Check the status of nodes on Leonardo:
+
+```bash
+sinfo
+```
+
+Check the status of your jobs:
+
+```bash
+squeue --me
+```
+
+Start an interactive session with SLURM (change job priority and max duration by changing `--qos`, see [documentation](https://wiki.u-gov.it/confluence/display/SCAIUS/UG3.2.1%3A+LEONARDO+Booster+UserGuide)):
+
+```bash
+srun --partition=boost_usr_prod --nodes=1 --ntasks=1 --cpus-per-task=1 --mem=8GB --gres=gpu:1 --time=0-00:30:00 --qos=boost_qos_dbg --account=EUHPC_D07_027 --pty /bin/bash
+```
+
+Kill a job:
+
+```bash
+scancel <job_id>
+```
