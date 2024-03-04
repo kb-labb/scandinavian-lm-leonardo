@@ -3,12 +3,13 @@ restore_from_path: null # used when starting from a .nemo file
 
 trainer:
   devices: 4
-  num_nodes: 1
+  num_nodes: 2
   accelerator: gpu
   precision: 16
   logger: False # logger provided by exp_manager
   enable_checkpointing: False
-  replace_sampler_ddp: False 
+  # replace_sampler_ddp: False # Use this in Lighning <= 2.0
+  use_distributed_sampler: False # Replace replace_sampler_ddp with this if Lightning >=2.0
   max_epochs: -1 # PTL default. In practice we don't usually train for more than 1 epoch.
   max_steps: 25000 # consumed_samples = global_step * micro_batch_size * data_parallel_size * accumulate_grad_batches
   log_every_n_steps: 100
@@ -41,11 +42,11 @@ exp_manager:
 
 model:
   # model parallelism 
-  micro_batch_size: 42
+  micro_batch_size: 32
   # 4 GPUS * 16 nodes = 64
   # 42 * 64 = 2688
   # 2688 * 3 = 8064
-  global_batch_size:  8064 #2 GPUS
+  global_batch_size: 1024 #2 GPUS
   tensor_model_parallel_size: 1
   pipeline_model_parallel_size: 1
 
@@ -83,6 +84,9 @@ model:
   megatron_amp_O2: False # Enable O2-level automatic mixed precision using main parameters
   grad_allreduce_chunk_size_mb: 125
   grad_div_ar_fusion: False 
+
+  # Flash attention
+  use_flash_attention: null
 
   # miscellaneous
   seed: 666

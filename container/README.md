@@ -25,3 +25,13 @@ To run containers in interactive mode with GPU support, use the following comman
 ```bash
 singularity shell --nv pytorch_2307_nemo.sif
 ```
+
+### Running container with exec
+
+You can also run a command inside the container without entering the shell:
+
+```bash
+singularity exec --nv pytorch_2307_nemo.sif python3 /path/to/script.py
+```
+
+This is generally how we run multi-node training jobs on Leonardo. See [start_script.sh](https://github.com/kb-labb/scandinavian-lm-leonardo/blob/8161062cdcc6772c447d194594943839f4930129/scripts/start_script.sh#L60-L61) for an example.

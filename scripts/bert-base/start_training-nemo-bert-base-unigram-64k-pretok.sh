@@ -33,11 +33,11 @@ nvidia-smi -L
 
 # export OMP_NUM_THREADS=2
 
+# For pytorch_2307_nemo.sif the path is: /workspace/NeMo/examples/nlp/language_modeling/megatron_bert_pretraining.py
+# For nemo_2306.sif the path is: /workspace/NeMo/examples/nlp/language_modeling/megatron_bert_pretraining.py
 cmd="python /workspace/nemo/examples/nlp/language_modeling/megatron_bert_pretraining.py  \
-    --config-path=/leonardo_work/EUHPC_D07_027/configs/ \
+    --config-path=/leonardo_work/EUHPC_D07_027/scandinavian-lm/faton/scandinavian-lm-leonardo/configs/bert-base \
     --config-name=megatron.bert-base.unigram-64k-pretok-small_data.tinystories.config.yaml \
-    trainer.devices=$NPROC_PER_NODE \
-    trainer.num_nodes=$SLURM_JOB_NUM_NODES \
     "
 
 echo "Executing Command:"
