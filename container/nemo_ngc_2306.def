@@ -1,0 +1,30 @@
+bootstrap: docker
+from: nvcr.io/nvidia/nemo:23.06
+
+%environment
+export LC_ALL=C
+# export NVTE_FRAMEWORK=pytorch
+
+%post
+python -m pip install --upgrade pip
+
+pip install nltk
+pip install transformers
+pip install tokenizers
+pip install datasets
+pip install lm-dataformat
+pip install packaging
+pip install einops
+pip install ninja
+ninja --version
+echo $?
+
+# Reduce MAX_JOBS if container build crashes (multithreaded compilation very memory intensive)
+# MAX_JOBS=8 pip install flash-attn==2.5.1.post1 --no-build-isolation --upgrade --force-reinstall --no-deps
+
+cd /workspace
+git clone -b fix-bert-pretrain-2306 --single-branch https://github.com/Lauler/NeMo.git
+python -m pip install git+https://github.com/Lauler/NeMo.git@fix-bert-pretrain-2306#egg=nemo_toolkit[nlp] --upgrade --force-reinstall --no-deps
+
+cd /usr/local/lib/python3.10/dist-packages/nemo/collections/nlp/data/language_modeling/megatron
+make

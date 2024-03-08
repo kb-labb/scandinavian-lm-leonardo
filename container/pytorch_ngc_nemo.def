@@ -3,10 +3,13 @@ from: nvcr.io/nvidia/pytorch:23.07-py3
 
 %environment
 export LC_ALL=C
+export NVTE_FRAMEWORK=pytorch
 
 %post
 pip3 list
 gcc --version
+python -m pip install --upgrade pip
+pip install torch torchvision torchtext torchdata --no-cache-dir --upgrade --force-reinstall
 
 pip3 install nltk
 pip3 install transformers
@@ -18,9 +21,39 @@ pip3 install einops
 pip3 install ninja
 ninja --version
 echo $?
-MAX_JOBS=10 pip3 install flash-attn --no-build-isolation --upgrade --force-reinstall --no-deps
+
+# Reduce MAX_JOBS if container build crashes (multithreaded compilation very memory intensive)
+MAX_JOBS=8 pip install flash-attn==1.0.7 --no-build-isolation --upgrade
 
 cd /workspace
-git clone https://github.com/NVIDIA/NeMo
-cd NeMo
-pip3 install 'nemo_toolkit[nlp]'
+git clone -b fix-bert-pretrain-2306 --single-branch https://github.com/Lauler/NeMo.git
+git clone -b huggingface-tokenizer-support https://github.com/Lauler/Megatron-LM.git
+git clone https://github.com/NVIDIA/apex.git
+git clone https://github.com/huggingface/nanotron.git
+
+cd /workspace/nanotron
+pip install -e .
+
+# Reinstall apex because update_scale_hysteresis.cu is missing in container's apex version
+# Takes a long time to compile.
+cd /workspace/apex
+git checkout b496d85fb88a801d8e680872a12822de310951fd
+MAX_JOBS=16 pip install -v --no-build-isolation --disable-pip-version-check --no-cache-dir --config-settings "--build-option=--cpp_ext --cuda_ext --fast_layer_norm --distributed_adam --deprecated_fused_adam" ./
+
+# Megatron 
+cd /workspace/Megatron-LM
+git submodule update --init --recursive
+MAX_JOBS=16 python -m pip install git+https://github.com/Lauler/Megatron-LM.git@huggingface-tokenizer-support --upgrade --force-reinstall
+
+# Install fork of NeMo with HF tokenizer support
+cd /workspace/NeMo
+python -m pip install git+https://github.com/Lauler/NeMo.git@fix-bert-pretrain-2306#egg=nemo_toolkit[nlp]
+MAX_JOBS=16 pip install git+https://github.com/NVIDIA/TransformerEngine.git@stable --upgrade
+
+# Nvidia too lazy to pre-compile dataset helpers in their library.
+# Causes crashes if not compiled because container is a read-only system
+cd /usr/local/lib/python3.10/dist-packages/nemo/collections/nlp/data/language_modeling/megatron
+make
+
+cd /workspace/Megatron-LM/megatron/core/datasets
+make
