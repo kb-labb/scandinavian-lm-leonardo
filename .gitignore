@@ -1,2 +1,7 @@
 logs/
 checkpoints/
+nanotron/
+NeMo/
+tokenizers/
+datasets/
+venvs/

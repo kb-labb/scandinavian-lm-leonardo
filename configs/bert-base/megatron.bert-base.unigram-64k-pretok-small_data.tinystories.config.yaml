@@ -8,8 +8,8 @@ trainer:
   precision: 16
   logger: False # logger provided by exp_manager
   enable_checkpointing: False
-  # replace_sampler_ddp: False # Use this in Lighning <= 2.0
-  use_distributed_sampler: False # Replace replace_sampler_ddp with this if Lightning >=2.0
+  replace_sampler_ddp: False # Use this in Lighning <= 2.0
+  # use_distributed_sampler: False # Replace replace_sampler_ddp with this if Lightning >=2.0
   max_epochs: -1 # PTL default. In practice we don't usually train for more than 1 epoch.
   max_steps: 25000 # consumed_samples = global_step * micro_batch_size * data_parallel_size * accumulate_grad_batches
   log_every_n_steps: 100
@@ -42,16 +42,16 @@ exp_manager:
 
 model:
   # model parallelism 
-  micro_batch_size: 32
+  micro_batch_size: 12
   # 4 GPUS * 16 nodes = 64
   # 42 * 64 = 2688
   # 2688 * 3 = 8064
-  global_batch_size: 1024 #2 GPUS
+  global_batch_size: 1056 #2 GPUS
   tensor_model_parallel_size: 1
   pipeline_model_parallel_size: 1
 
   # model architecture
-  encoder_seq_length: 512
+  encoder_seq_length: 2048
   max_position_embeddings: ${.encoder_seq_length}
   num_layers: 12
   hidden_size: 768
@@ -69,7 +69,7 @@ model:
 
   tokenizer:
     library: 'huggingface'
-    type: 'KBLab/unigram-64k-pretok-small_data-tokenizer'
+    type: 'tokenizers/KBLab/unigram-64k-pretok-small_data-tokenizer'
     model: null
     vocab_file: null
     merge_file: null

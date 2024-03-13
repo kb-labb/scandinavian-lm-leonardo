@@ -1,0 +1,9 @@
+torch
+transformers
+datasets
+packaging
+ninja
+python-etcd
+tensorboardX
+flash-attn
+--editable nanotron

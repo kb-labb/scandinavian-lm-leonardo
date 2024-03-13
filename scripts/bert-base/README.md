@@ -38,3 +38,15 @@ bash preprocess_data.sh
 This will produce a `.idx` and `.bin` file with the name `{prefix}_sentence.bin` and `{prefix}_sentence.idx` respectively. 
 
 Point to `/path_to_my_data/{prefix}_sentence` in your BERT model's NeMo config file under `data_prefix`. 
+
+### Download tokenizer
+
+On Leonardo, you will need to download the tokenizer on the login node and save it locally (compute nodes don't have internet).
+
+```python
+from transformers import AutoTokenizer
+tokenizer = AutoTokenizer.from_pretrained("KBLab/unigram-64k-pretok-small_data-tokenizer")
+tokenizer.save_pretrained("KBLab/unigram-64k-pretok-small_data-tokenizer", cache_dir="tokenizers/KBLab/unigram-64k-pretok-small_data-tokenizer")
+```
+
+Point to this tokenizer on your model's yaml config file (`configs/bert-base/megatron.bert-base.unigram-64k-pretok-small_data.tinystories.config.yaml`) when launching the training job.
