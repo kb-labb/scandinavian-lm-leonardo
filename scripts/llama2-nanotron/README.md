@@ -93,6 +93,9 @@ dataset = load_dataset("json", data_files=datafiles, cache_dir="datasets/tinysto
 
 Check and if necessary modify the `model.yaml` file to point to the correct tokenizer and dataset directories. Modify `checkpoints_path` to point to a desired output directory in your working directory.
 
+> [!NOTE]
+> Adjust the data parallelism settings (`dp`) if you train on more than two nodes.
+
 ### Train the model
 
 Launching this training job **does not** require running `start_script.sh`. We are able to launch the training with a single script. 
@@ -102,5 +105,9 @@ To train the model, you can use the `start_training.sh` script in the `scripts/l
 ```bash
 sbatch scripts/llama2-nanotron/start_training.sh
 ```
+
+> [!NOTE]
+> Make sure a `logs` directory exists in your workspace before starting the job.  
+> Otherwise the job might crash because SLURM can't write to `logs`.
 
 Adjust the `start_training.sh` script if necessary to point to the correct python environment (the path to activate your venv).

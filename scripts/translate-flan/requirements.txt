@@ -1,0 +1,8 @@
+torch
+ninja
+packaging
+sentencepiece
+flash-attn
+ctranslate2
+transformers
+datasets
