@@ -87,3 +87,27 @@ sbatch start_training.sh
 > It's important you adjust the args `tokenizer`, `tokenizer_backtranslation`, `model`,
 > `model_backtranslation`, as well as the dataset inputs (the two datasets created by previous script).
 > See `start_training.sh` for a commented out example of translating/backtranslating Norwegian.
+
+A bash script for norwegian translation is provided in `start_training_nor.sh`:
+
+```bash
+sbatch start_training_nor.sh
+```
+
+### Combine translations
+
+Translations need to be concatenated again and combined to a single dataset with train, validation, and test splits. This can be done by running:
+
+```bash
+python postprocess_flan.py \
+    --original_dataset datasets/flan_indexed \
+    --language swe
+
+python postprocess_flan.py \
+    --original_dataset datasets/flan_indexed \
+    --language nor
+```
+
+### Upload to Hugging Face
+
+To convert the dataset to a Hugging Face dataset and upload to hub, see `parquet_to_hf_dataset.py`.

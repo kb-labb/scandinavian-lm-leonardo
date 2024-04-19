@@ -5,7 +5,7 @@
 #SBATCH --gres=gpu:4            # number of gpus per node
 #SBATCH --cpus-per-task=16        # cpu-cores per task (>1 if multi-threaded tasks)
 #SBATCH --mem=92GB               # total memory per node 
-#SBATCH --time=0-10:30:00          # total run time limit (HH:MM:SS)
+#SBATCH --time=0-14:30:00          # total run time limit (HH:MM:SS)
 #SBATCH --ntasks-per-node=1
 #SBATCH --partition=boost_usr_prod
 #SBATCH --qos=normal                   #default
@@ -25,7 +25,11 @@ export OMP_NUM_THREADS=16
 MASTER_ADDR=$(scontrol show hostnames $SLURM_JOB_NODELIST | head -n 1)
 echo "Master addr: $MASTER_ADDR:$MASTER_PORT"
 
-CMD="python translate_flan.py --backtranslate"
+CMD="python translate_flan.py \
+    --output_inputs datasets/flan_chunked_inputs_swe_out \
+    --output_targets datasets/flan_chunked_targets_swe_out \
+    --backtranslate
+    "
 # CMD="python translate_flan.py \
 #     --backtranslate \
 #     --model models/ct2/eng-nor \

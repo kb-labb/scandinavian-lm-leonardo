@@ -26,9 +26,7 @@ def collate_fn(batch, column="inputs_tokenized"):
 def decode_batch(results):
     decoded_sentences = []
     for result in results:
-        decoded_sentences.append(
-            "".join(result.hypotheses[0]).replace("▁", " ").strip()
-        )
+        decoded_sentences.append("".join(result.hypotheses[0]).replace("▁", " ").strip())
     return decoded_sentences
 
 
@@ -53,9 +51,7 @@ def predict(model, split, dataset, tokenized_column, num_workers=8):
 def parse_args():
     argparser = argparse.ArgumentParser()
     argparser.add_argument("--model", type=str, default="models/ct2/eng-swe")
-    argparser.add_argument(
-        "--model_backtranslate", type=str, default="models/ct2/swe-eng"
-    )
+    argparser.add_argument("--model_backtranslate", type=str, default="models/ct2/swe-eng")
     argparser.add_argument("--tokenizer", type=str, default="models/eng-swe/source.spm")
     argparser.add_argument(
         "--tokenizer_backtranslate", type=str, default="models/swe-eng/source.spm"
@@ -66,18 +62,16 @@ def parse_args():
     argparser.add_argument(
         "--inputs_dataset",
         type=str,
-        default="datasets/flan_chunked_inputs",
+        default="datasets/flan_chunked_inputs_swe",
         help="Inputs from FLAN to be translated.",
     )
     argparser.add_argument(
         "--targets_dataset",
         type=str,
-        default="datasets/flan_chunked_targets",
+        default="datasets/flan_chunked_targets_swe",
         help="Targets from FLAN to be translated.",
     )
-    argparser.add_argument(
-        "--output_inputs", type=str, default="datasets/flan_chunked_inputs_swe"
-    )
+    argparser.add_argument("--output_inputs", type=str, default="datasets/flan_chunked_inputs_swe")
     argparser.add_argument(
         "--output_targets", type=str, default="datasets/flan_chunked_targets_swe"
     )
@@ -97,9 +91,7 @@ if __name__ == "__main__":
 
     devices = list(range(torch.cuda.device_count()))
     translator = ctranslate2.Translator(args.model, device="cuda", device_index=devices)
-    column_name_translate = (
-        "translation_swe" if "swe" in args.model else "translation_nor"
-    )
+    column_name_translate = "translation_swe" if "swe" in args.model else "translation_nor"
 
     logger.info(f"Translating the dataset to column {column_name_translate}.")
     # Translate the inputs
