@@ -5,5 +5,5 @@ packaging
 ninja
 python-etcd
 tensorboardX
-flash-attn
+# flash-attn
 --editable nanotron

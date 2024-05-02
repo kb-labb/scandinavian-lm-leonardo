@@ -48,10 +48,10 @@ Install the dependencies:
 MAX_JOBS=6 pip install -r scripts/llama2-nanotron/requirements.txt
 ```
 
-**Note**: If flash attention doesn't install correctly you may have to install it outside of the requirements file with `--no-build-isolation`:
+**Note**: Flash attention needs to be installed after `ninja` and `packaging` are already installed. Install it separately afterrwards with `--no-build-isolation`:
 
 ```bash
-pip install flash-attn --no-build-isolation
+MAX_JOBS=6 pip install flash-attn --no-build-isolation
 ```
 
 ### Copy the tokenizer to local directory
@@ -91,7 +91,7 @@ dataset = load_dataset("json", data_files=datafiles, cache_dir="datasets/tinysto
 
 ### Model yaml config file
 
-Check and if necessary modify the `model.yaml` file to point to the correct tokenizer and dataset directories. Modify `checkpoints_path` to point to a desired output directory in your working directory.
+Check and if necessary modify the [`config_llama_7b.yaml`](https://github.com/kb-labb/scandinavian-lm-leonardo/blob/main/configs/llama2-nanotron/config_llama_7b.yaml) file to point to the correct tokenizer and dataset directories. Modify `checkpoints_path` to point to a desired output directory in your working directory.
 
 > [!NOTE]
 > Adjust the data parallelism settings (`dp`) if you train on more than two nodes.
@@ -111,3 +111,35 @@ sbatch scripts/llama2-nanotron/start_training.sh
 > Otherwise the job might crash because SLURM can't write to `logs`.
 
 Adjust the `start_training.sh` script if necessary to point to the correct python environment (the path to activate your venv).
+
+### Multiple epoch training
+
+To train multiple epochs on the same data, the yaml file should be modified to repeat the dataset:
+
+```yaml
+data_stages:
+- data:
+    dataset:
+      dataset_overwrite_cache: false
+      dataset_processing_num_proc_per_process: 4
+      hf_dataset_config_name: null
+      hf_dataset_or_datasets: datasets/tinystories-dataset
+      hf_dataset_splits: train
+      text_column_name: translation
+    num_loading_workers: 16
+    seed: 42
+  name: Stable Training Stage
+  start_training_step: 1
+- data:
+    dataset:
+      dataset_overwrite_cache: false
+      dataset_processing_num_proc_per_process: 4
+      hf_dataset_config_name: null
+      hf_dataset_or_datasets: datasets/tinystories-dataset
+      hf_dataset_splits: train
+      text_column_name: translation
+    num_loading_workers: 16
+    seed: 42
+  name: 2nd Training Stage
+  start_training_step: 5000 # Figure out the correct step to start from
+```

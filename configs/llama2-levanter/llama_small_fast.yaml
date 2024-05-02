@@ -1,0 +1,28 @@
+data:
+  id: "data/tiny-train-valid3"
+  cache_dir: "cache/"
+  tokenizer: "versae/scandinavian-tokenizer"
+model:
+  type: llama
+  hidden_dim: 768
+  intermediate_dim: 2048
+  num_heads: 12
+  num_kv_heads: 12
+  num_layers: 12
+  seq_len: 1024
+  gradient_checkpointing: true
+trainer:
+  tracker:
+    - type: tensorboard
+      logdir: logs
+
+  mp: p=f32,c=bfloat16
+  model_axis_size: 1
+  per_device_parallelism: -1
+
+  train_batch_size: 256
+  num_train_steps: 20000
+optimizer:
+  learning_rate: 1E-3
+  weight_decay: 0.1
+  warmup: 0.01
