@@ -4,8 +4,8 @@
 #SBATCH --nodes=2           #161
 #SBATCH --gres=gpu:4            # number of gpus per node
 #SBATCH --cpus-per-task=8        # cpu-cores per task (>1 if multi-threaded tasks)
-#SBATCH --mem=128GB               # total memory per node 
-#SBATCH --time=0-00:30:00          # total run time limit (HH:MM:SS)
+#SBATCH --mem=400GB               # total memory per node 
+#SBATCH --time=0-01:30:00          # total run time limit (HH:MM:SS)
 #SBATCH --ntasks-per-node=4
 #SBATCH --partition=boost_usr_prod
 #SBATCH --qos=normal                   #default
@@ -13,8 +13,10 @@
 #SBATCH --output=logs/sbatch-%J.log
 
 
-module purge
-module load singularity
+# module purge
+# module load singularity
+module load cuda/12.1
+module load cudnn/8.9.7.29-12--gcc--12.2.0-cuda-12.1
 
 pwd
 addr=$(/bin/hostname -s)
@@ -40,7 +42,6 @@ USER=$2 #USER is you! pass your user's directory name to the start_script comman
 PROJECT="/leonardo_work/EUHPC_D07_027/scandinavian-lm/${USER}/scandinavian-lm-leonardo"
 export CHECKPOINT_DIR="${PROJECT}/checkpoints"
 export CONFIG_DIR="${PROJECT}/configs"
-SCRIPTS_DIR="${PROJECT}/scripts"
 CONTAINER_PATH="/leonardo_work/EUHPC_D07_027/containers/nemo_2306.sif"
 LEONARDO_WORK="/leonardo_work/EUHPC_D07_027"
 LOGGING=$PROJECT/logs # Make sure to create logs/ before running this script
@@ -58,8 +59,10 @@ echo "SLURM_PROCID" $SLURM_PROCID
 echo "SLURM_GPUS" $SLURM_GPUS
 echo "SLURM_GPUS_PER_NODE" $SLURM_GPUS_PER_NODE
 
+echo "LOGGING" $LOGGING
+
 cmd="srun -l --output=$LOGGING/${SLURM_JOB_NAME}_${DATETIME}.log \
-      singularity exec --nv -B $LEONARDO_WORK $CONTAINER_PATH bash $SCRIPTS_DIR/$TRAIN_SCRIPT"
+      singularity exec --nv -B $LEONARDO_WORK $CONTAINER_PATH bash $PROJECT/$TRAIN_SCRIPT"
 
 echo "Executing:"
 echo $cmd

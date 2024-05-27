@@ -3,17 +3,16 @@ restore_from_path: null # used when starting from a .nemo file
 
 trainer:
   devices: 4
-  num_nodes: 2
+  num_nodes: 1
   accelerator: gpu
   precision: 16
   logger: False # logger provided by exp_manager
   enable_checkpointing: False
-  replace_sampler_ddp: False # Use this in Lighning <= 2.0
-  # use_distributed_sampler: False # Replace replace_sampler_ddp with this if Lightning >=2.0
+  replace_sampler_ddp: False 
   max_epochs: -1 # PTL default. In practice we don't usually train for more than 1 epoch.
   max_steps: 25000 # consumed_samples = global_step * micro_batch_size * data_parallel_size * accumulate_grad_batches
   log_every_n_steps: 100
-  val_check_interval: 1000
+  val_check_interval: 2000
   limit_val_batches: 30
   limit_test_batches: 500
   accumulate_grad_batches: 1
@@ -23,7 +22,7 @@ trainer:
 exp_manager:
   explicit_log_dir: null
   exp_dir: /leonardo_work/EUHPC_D07_027/experiment_logs
-  name: megatron.bert-base.unigram-64k-pretok-small_data.tinystories2
+  name: megatron.bert-large.unigram-64k-pretok-small_data.tinystories
   create_wandb_logger: False
   wandb_logger_kwargs:
     project: null
@@ -42,21 +41,21 @@ exp_manager:
 
 model:
   # model parallelism 
-  micro_batch_size: 8
-  # 4 GPUS * 16 nodes = 64
-  # 42 * 64 = 2688
-  # 2688 * 3 = 8064
-  global_batch_size: 1024 #2 GPUS
-  tensor_model_parallel_size: 1
+  micro_batch_size: 128
+  # 4 GPUS * 21 nodes = 84
+  # 24 * 84 = 2016
+  # 2016 * 4 = 8064
+  global_batch_size: 8192 #2 GPUS
+  tensor_model_parallel_size: 4
   pipeline_model_parallel_size: 1
 
   # model architecture
-  encoder_seq_length: 2048
+  encoder_seq_length: 512
   max_position_embeddings: 2048
-  num_layers: 12
-  hidden_size: 768
-  ffn_hidden_size: 3072 # Transformer FFN hidden size. Usually 4 * hidden_size.
-  num_attention_heads: 12
+  num_layers: 24
+  hidden_size: 1024
+  ffn_hidden_size: 4096 # Transformer FFN hidden size. Usually 4 * hidden_size.
+  num_attention_heads: 16
   init_method_std: 0.02 # Standard deviation of the zero mean normal distribution used for weight initialization.')
   hidden_dropout: 0.1 # Dropout probability for hidden state transformer.
   kv_channels: null # Projection weights dimension in multi-head attention. Set to hidden_size // num_attention_heads if null
@@ -73,6 +72,7 @@ model:
     model: null
     vocab_file: null
     merge_file: null
+
 
   # precision
   native_amp_init_scale: 4294967296 # 2 ** 32

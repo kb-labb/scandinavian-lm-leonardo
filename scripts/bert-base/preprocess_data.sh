@@ -7,12 +7,12 @@ echo "Preprocessing data with tokenizer $tokenizer"
 
 # Nemo
 cmd="python NeMo/scripts/nlp_language_modeling/preprocess_data_for_megatron.py \
-            --input /home/fatrek/data_network/robin/data/tiny-stories/tiny-stories-train-swe.jsonl \
+            --input /leonardo_work/EUHPC_D07_027/data/tiny-stories-train-swe.jsonl \
             --json-keys translation \
             --split-sentences \
             --tokenizer-library huggingface \
             --tokenizer-type $tokenizer \
-            --output-prefix tinyswe-uni-64k-pre-$split \
+            --output-prefix /leonardo_work/EUHPC_D07_027/data/swedish/tinyswe-uni-64k-pre-$split \
             --dataset-impl mmap \
             --workers=24"
 
