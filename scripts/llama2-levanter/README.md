@@ -28,17 +28,14 @@ First, unload the `cineca-ai` module:
 module unload cineca-ai
 ```
 
-Load cuda 12.3 and GCC in case they are needed for compilation:
+Install a version of JAX that is compatible with CUDA 12.3 and manually reinstall the `nvidia-cudnn` version to be compatible with your version of jaxlib (`pip list | grep jaxlib` should show `0.4.27+cuda12.cudnn89`):
+
+> [!WARNING]
+> JAX install `nvidia-cudnn` 9.1.0.70 by default. We need 8.9.
 
 ```bash
-module load cuda/12.3
-module load gcc/12.2.0-cuda-12.1
-```
-
-Install a version of JAX that is compatible with CUDA 12.3:
-
-```bash
-pip install --upgrade "jax[cuda12_local]==0.4.23" -f https://storage.googleapis.com/jax-releases/jax_cuda_releases.html
+pip install --upgrade "jax[cuda12_local]==0.4.27" -f https://storage.googleapis.com/jax-releases/jax_cuda_releases.html
+pip install nvidia-cudnn-cu12==8.9.7.29
 ```
 
 Install Levanter in editable mode: 
@@ -47,6 +44,14 @@ Install Levanter in editable mode:
 git clone https://github.com/stanford-crfm/levanter.git
 cd levanter
 pip install -e .
+```
+
+```bash
+module load cuda/12.1
+module load cudnn/8.9.7.29-12--gcc--12.2.0-cuda-12.1
+module load gcc/12.2.0-cuda-12.1
+pip install git+https://github.com/NVIDIA/TransformerEngine.git@stable
+module purge
 ```
 
 ### Prepare data
