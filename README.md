@@ -43,19 +43,10 @@ cindata
 
 ### Transferring data
 
-Leonardo has a [guide](https://wiki.u-gov.it/confluence/display/SCAIUS/Rsync) on how to transfer data with `rsync`. They recommend starting an interactive session with SLURM on the `lrd_all_serial` partition (cpu only):
+Leonardo has a [guide](https://wiki.u-gov.it/confluence/display/SCAIUS/Datamover) on how to transfer data with `rsync`, `scp`, `sftp`, `wget` or `curl`. You can either 
 
-```bash
-srun --partition=lrd_all_serial --nodes=1 --ntasks=1 --cpus-per-task=1 --mem=8GB --time=0-01:00:00 --qos=normal --account=EUHPC_D07_027 --pty /bin/bash
-```
-
-Then you can use `rsync` to transfer data to Leonardo from your local machine:
-
-```bash
-rsync -PravzHS /data_path_from/dir username@login.leonardo.cineca.it:/data_path_to/dir
-```
-
-However, it does not appear to be necessary to start an interactive session. You can simply use the `rsync` command without the `srun` job. 
+1. Transfer data directly via login node `rsync -PravzHS /data_path_from/local_dir <user>@login.leonardo.cineca.it:/data_path_to/leonardo_dir`. Login nodes only allow processes to run for a limited time however, so this is not recommended for large transfers.
+2. Transfer via Leonardo's dedicated data transfer nodes. `rsync -PravzHS /data_path_from/local_dir <user>@data.leonardo.cineca.it:/data_path_to/leonardo_dir`.
 
 ## SLURM
 
