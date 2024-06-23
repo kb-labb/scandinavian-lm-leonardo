@@ -3,12 +3,15 @@ import requests
 
 headers = {"Content-Type": "application/json"}
 
-def text_generation(data, ip='localhost', port=None):
-    resp = requests.put(f'http://{ip}:{port}/generate', data=json.dumps(data), headers=headers)
+
+def text_generation(data, ip="localhost", port=None):
+    resp = requests.put(f"http://{ip}:{port}/generate", data=json.dumps(data), headers=headers)
     return resp.json()
 
 
-def get_generation(prompt, greedy, add_BOS, token_to_gen, min_tokens, temp, top_p, top_k, repetition, batch=False):
+def get_generation(
+    prompt, greedy, add_BOS, token_to_gen, min_tokens, temp, top_p, top_k, repetition, batch=False
+):
     data = {
         "sentences": [prompt] if not batch else prompt,
         "tokens_to_generate": int(token_to_gen),
@@ -22,8 +25,9 @@ def get_generation(prompt, greedy, add_BOS, token_to_gen, min_tokens, temp, top_
         "min_tokens_to_generate": int(min_tokens),
         "end_strings": ["<|endoftext|>", "<extra_id_1>", "\x11", "<extra_id_1>User"],
     }
-    sentences = text_generation(data, port=1424)['sentences']
+    sentences = text_generation(data, port=1424)["sentences"]
     return sentences[0] if not batch else sentences
+
 
 PROMPT_TEMPLATE = """<extra_id_0>System
 
@@ -50,19 +54,30 @@ prompts = [prompt, prompt2, prompt3]
 print(prompts)
 
 # "Batch = False" if you only send one prompt
-response = get_generation(prompts, greedy=True, add_BOS=False, token_to_gen=1024, min_tokens=1, temp=1.0, top_p=1.0, top_k=0, repetition=1.0, batch=True)
+response = get_generation(
+    prompts,
+    greedy=True,
+    add_BOS=False,
+    token_to_gen=1024,
+    min_tokens=1,
+    temp=1.0,
+    top_p=1.0,
+    top_k=0,
+    repetition=1.0,
+    batch=True,
+)
 
 if len(response) == 1:
-    response = response[len(prompts[0]):]
+    response = response[len(prompts[0]) :]
     if response.endswith("<extra_id_1>"):
-        response = response[:-len("<extra_id_1>")]
+        response = response[: -len("<extra_id_1>")]
     # print(prompts[0])
     print(response)
 
 if len(response) > 2:
     for i, res in enumerate(response):
-        res = res[len(prompt2):]
+        res = res[len(prompts[i]) :]
         if res.endswith("<extra_id_1>"):
-            res = res[:-len("<extra_id_1>")]
+            res = res[: -len("<extra_id_1>")]
         # print(prompts[i])
         print(res)
