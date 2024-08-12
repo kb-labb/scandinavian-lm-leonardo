@@ -34,5 +34,5 @@ Options:
 Evaluate scores throughout training like [Fineweb Edu](https://huggingface.co/spaces/HuggingFaceFW/blogpost-fineweb-v1). Benchmark on:
 
 * Selected benchmarks from ScandEval.
-* SuperLim
-* LTG-Oslo's evalation set for Norwegian.
+* [SuperLim](https://github.com/spraakbanken/SuperLim-2)
+* [NorBench](https://github.com/ltgoslo/norbench)
