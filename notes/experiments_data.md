@@ -10,7 +10,8 @@ Suggested experiments to run to measure the effects of data quality filtering.
 #### Filters to apply
 
 * None (use baseline datasets, OSCAR+C4)
-* CulturaX (use CulturaX dataset)
+* Deduplication
+* CulturaX (use CulturaX dataset, and compare results to our Gopher rules and heuristics)
 * Gopher rules and other heuristic based filters (applied on top of OSCAR+C4)
 * Document quality classifier filter:
   a. Educational value score
@@ -27,7 +28,9 @@ Suggested experiments to run to measure the effects of data quality filtering.
 Options:
 
 * BERT-base models.
-* "Smaller" GPT/LLama-like models (1B, 2.7B).
+* Pretrain from scratch: "Smaller" GPT/LLama-like models (1B, 1.7B).
+* Start from existing LLama checkpoint (1.7B or smaller): [SmolLM](https://huggingface.co/HuggingFaceTB/SmolLM-1.7B).
+* Continue pretraining on Llama-8B for fewer tokens (one month of compute is 220B tokens worth of experiments in terms of throughput).
 
 #### Evaluation
 
