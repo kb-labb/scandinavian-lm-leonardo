@@ -2,6 +2,14 @@
 
 Meetings notes 
 
+#### 2024-08-19
+
+During the previous week we debugged Gopher rules for data preprocessing, since the rules were unexpectedly removing too much data. The plan this week is to transfer data to the HPC and create document quality scores and train quality score classifiers. We also discussed whether to perform experiments where we i) pretrain 1.7B Llama models from scratch, ii) start from existing (SmolLM) checkpoint, iii) continue pretraining on Llama-8B, or iv) train BERTs.
+
+* Need to decide on an English dataset to use when doing continued pretraining (and maybe also experiments). Fineweb Edu?
+* Add a code dataset ([The Stack v2](https://huggingface.co/collections/bigcode/starcoder2-65de6da6e87db3383572be1a)).
+* Suggestion ot create a LLM scorer that filters and upweights for documents with cultural/language specific knowledge of Scandinavian.
+
 #### 2024-08-12
 
 Discussion relating to how to best set up a dataset and relevant experiments to measure the effects of data quality filtering. The focus is to i) create a dataset from OSCAR+C4, ii) apply gopher rule-like filtering on the dataset, iii) create document quality scores, iv) train quality score classifiers.
