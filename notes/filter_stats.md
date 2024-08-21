@@ -1,4 +1,4 @@
-# Gopher Stats
+# Filter Stats
 
 
 ## Swedish
