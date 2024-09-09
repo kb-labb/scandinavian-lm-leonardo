@@ -12,6 +12,7 @@ Discussions relating to quality scoring with LLMs. Previous 2 weeks we scores 50
 * Apply and add fineweb prompt in English to [evaluation dataset](https://huggingface.co/datasets/ScandLM/eval_educational_prompt) of manually annotated good/bad examples, so we can compare against prompts written in Swedish and Norwegian.
 * Upload documents score with fineweb-edu to HF.
 * Train BERT regressors on fineweb-edu output.
+* Exploration of removing boilerplate, or rewriting docs to clean up documents. Not highest priority right now, but worth looking into.
 
 #### 2024-08-19
 
