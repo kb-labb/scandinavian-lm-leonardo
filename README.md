@@ -26,14 +26,14 @@ Specific login servers can be found in the [Leonardo User Guide](https://wiki.u-
 
 ### Storage and group directories
 
-Each user has `50GB` of storage in their home directory. Our project also has `4TB` of additional group storage on Leonardo. The project storage is located at: `/leonardo_work/EUHPC_D07_027`. 
+Each user has `50GB` of storage in their home directory. Our project also has `4TB` of additional group storage on Leonardo. The project storage is located at: `/leonardo_work/EUHPC_A02_045`. 
 
 You should be able to find these directories via the environment variables `$HOME` and `$WORK`. 
 
 It is recommended that everyone creates a directory for their work under `scandinavian-lm`. Containers you've built or used to train a specific model go under `containers`. Model logs or tensorboard output in `experiment_logs`. 
 
 ```
-/leonardo_work/EUHPC_D07_027
+/leonardo_work/EUHPC_A02_045
 │   ├── containers
 │   ├── data
 |   ├── experiment_logs
@@ -83,7 +83,7 @@ squeue --me
 Start an interactive session with SLURM (change job priority and max duration by changing `--qos`, see [documentation](https://wiki.u-gov.it/confluence/display/SCAIUS/UG3.2.1%3A+LEONARDO+Booster+UserGuide)):
 
 ```bash
-srun --partition=boost_usr_prod --nodes=1 --ntasks=1 --cpus-per-task=1 --mem=8GB --gres=gpu:1 --time=0-00:30:00 --qos=boost_qos_dbg --account=EUHPC_D07_027 --pty /bin/bash
+srun --partition=boost_usr_prod --nodes=1 --ntasks=1 --cpus-per-task=1 --mem=8GB --gres=gpu:1 --time=0-00:30:00 --qos=boost_qos_dbg --account=EUHPC_A02_045 --pty /bin/bash
 ```
 
 Kill a job:
