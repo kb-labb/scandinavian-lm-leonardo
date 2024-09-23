@@ -6,6 +6,24 @@ Central repository for model configs, slurm scripts, singularity container defin
 
 For general documentation on how to use Leonardo, see the [Leonardo User Guide](https://wiki.u-gov.it/confluence/display/SCAIUS/UG2.0%3A+General+Information), and information about the [Leonardo cluster](https://wiki.u-gov.it/confluence/display/SCAIUS/UG3.2.1%3A+LEONARDO+Booster+UserGuide).
 
+### Login
+
+If you haven't configured smallstep to set up a certificate, first follow the instructions in the [smallstep documentation](https://wiki.u-gov.it/confluence/display/SCAIUS/Setup+client+step-cli%3A+Linux+and+Mac+users).
+
+To login with 2FA, authenticate with smallstep using the e-mail you registered with:
+
+```bash
+step ssh login '<user-email>' --provisioner cineca-hpc
+```
+
+This will open up a browser where you login with your Cineca credentials. Once you activated the 2FA:
+
+```bash
+ssh <username>@login.leonardo.cineca.it
+```
+
+Specific login servers can be found in the [Leonardo User Guide](https://wiki.u-gov.it/confluence/display/SCAIUS/UG3.2%3A+LEONARDO+UserGuide).
+
 ### Storage and group directories
 
 Each user has `50GB` of storage in their home directory. Our project also has `4TB` of additional group storage on Leonardo. The project storage is located at: `/leonardo_work/EUHPC_D07_027`. 
