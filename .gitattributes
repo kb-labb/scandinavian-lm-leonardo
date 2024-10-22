@@ -1,0 +1,2 @@
+stats/data/*npy filter=lfs diff=lfs merge=lfs -text
+stats/data/*json filter=lfs diff=lfs merge=lfs -text
