@@ -2,6 +2,14 @@
 
 Meetings notes 
 
+#### 2024-11-04
+
+We begun training 1.8B param baseline models (deduplicated, gopher filtered data), and models on fineweb filtered data. We train them on ~35B tokens. These now need to be evaluated.
+
+* The goal is to evaluate with Perplexity measures on validation sets from the same pretraining corpora that we trained on.
+* A further possibility is to use ScandEval. Adapt it to use with HF:s evaluation framework LightEval.
+* Mimir and SuperLim are also possibilities. But since they are monolingual, and in the case of SuperLim also adapted to Encoder models, we initially focus on the first two suggestions above. 
+
 #### 2024-09-09
 
 Discussions relating to quality scoring with LLMs. Previous 2 weeks we scores 500k docs each in Swedish, Norwegian and Danish with the original fineweb prompt (in English). This week we want to add the original Ask-LLM prompt for comparison. Additionally, train BERT regressors on the fineweb scores so we can score the entire corpus with fineweb-edu scores.
