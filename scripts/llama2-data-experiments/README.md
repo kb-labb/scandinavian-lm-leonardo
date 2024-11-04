@@ -1,7 +1,7 @@
 ## Nanotron Llama2 Data Experiments
 
 ```bash
-git clone -b scandlm git@github.com:Lauler/nanotron.git
+git clone -b scandlm https://github.com/Lauler/nanotron.git
 ```
 
 > [!NOTE]
