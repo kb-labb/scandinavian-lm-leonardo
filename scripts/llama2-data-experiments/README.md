@@ -4,7 +4,8 @@
 git clone https://github.com/huggingface/nanotron.git
 ```
 
-> [!NOTE] All instructions assume you are using the cloned `nanotron` repository as your working directory.
+> [!NOTE]
+> All instructions assume you are using the cloned `nanotron` repository as your working directory.
 
 ### Create python venv for the project
 
@@ -40,7 +41,8 @@ pip install --upgrade pip
 pip install -r requirements.txt
 ```
 
-> [!IMPORTANT] The line `--editable .[nanosets]` in `requirements.txt` assumes you are in the `nanotron` directory when installing. Either navigate to the `nanotron` directory or edit the line to provide a relative path to the `nanotron` directory from your current terminal location.
+> [!IMPORTANT] 
+> The line `--editable .[nanosets]` in `requirements.txt` assumes you are in the `nanotron` directory when installing. Either navigate to the `nanotron` directory or edit the line to provide a relative path to the `nanotron` directory from your current terminal location.
 
 **Note**: Flash attention needs to be installed after `ninja` and `packaging` are already installed. Install it separately afterwards with `--no-build-isolation`:
 
@@ -74,6 +76,8 @@ Adjust the config file path to point to the correct config for your experiment.
 
 Example configs of our data experiment ablations can be found in [configs/llama2-data-experiments](https://github.com/kb-labb/scandinavian-lm-leonardo/blob/main/configs/llama2-data-experiments).
 
-> [!TIP] The `dp` (data parallel) setting needs to be set to the numebr of nodes you intend to use for training. 
+> [!TIP] 
+> The `dp` (data parallel) setting needs to be set to the numebr of nodes you intend to use for training. 
 
-> [!TIP] Your global batch size in terms of observatinos is going to be `micro_batch_size` * `dp` * `gradient_accumulation_steps`. To calculate your global batch size in terms of tokens, multiply this by `sequence_length`. To calculate the total number of tokens you are training over, multiply again by `train_steps`. 
+> [!TIP]
+> Your global batch size in terms of observatinos is going to be `micro_batch_size` * `dp` * `gradient_accumulation_steps`. To calculate your global batch size in terms of tokens, multiply this by `sequence_length`. To calculate the total number of tokens you are training over, multiply again by `train_steps`. 
