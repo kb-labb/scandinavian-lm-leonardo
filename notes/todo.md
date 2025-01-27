@@ -33,7 +33,7 @@
 
 ## Data Todo
 
-- [ ] evaluate classifiers on FineWeb 2 test sets
+- [ ] evaluate classifiers on FineWeb-c test sets
 - [ ] filter datasets with perplexity ?!
 - [ ] get perplexity distributions of filtered datasets ?!
 - [ ] run classifiers on
