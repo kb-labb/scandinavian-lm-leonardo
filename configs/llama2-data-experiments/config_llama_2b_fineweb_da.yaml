@@ -1,24 +1,17 @@
 checkpoints:
   checkpoint_interval: 500
-  checkpoints_path: checkpoints/fineweb-70b-score2/checkpoint_llama_2b_da
+  checkpoints_path: /leonardo_work/EUHPC_A02_045/checkpoints/fineweb-70b-2/checkpoint_llama_2b_da
   checkpoints_path_is_shared_file_system: false
-  resume_checkpoint_path: null
+  resume_checkpoint_path: /leonardo_work/EUHPC_A02_045/checkpoints/fineweb-70b-2/checkpoint_llama_2b_da
   save_initial_state: false
 data_stages:
 - data:
     dataset:
-      dataset_folder: datasets/nanoset-fineweb-70b-2/da_eos
-    num_loading_workers: 0
+      dataset_folder: /leonardo_work/EUHPC_A02_045/data/nanotron_experiments/train/nanoset/fineweb-70b-2/da
+    num_loading_workers: 8
     seed: 42
-  name: Epoch 1
+  name: Stage 1
   start_training_step: 1
-# - data:
-#     dataset:
-#       dataset_folder: datasets/nanoset-gopher/da_eos
-#     num_loading_workers: 0
-#     seed: 1337
-#   name: Epoch 2
-#   start_training_step: 13200
 general:
   benchmark_csv_path: null
   consumed_train_samples: null
@@ -64,7 +57,7 @@ optimizer:
   learning_rate_scheduler:
     learning_rate: 0.0003
     lr_decay_starting_step: null
-    lr_decay_steps: 10000
+    # lr_decay_steps: 12000
     lr_decay_style: cosine
     lr_warmup_steps: 500
     lr_warmup_style: linear
@@ -88,7 +81,7 @@ parallelism:
 profiler: null
 tokenizer:
   tokenizer_max_length: null
-  tokenizer_name_or_path: /leonardo_work/EUHPC_A02_045/scandinavian-lm/faton/nanotron/tokenizer/da
+  tokenizer_name_or_path: /leonardo_work/EUHPC_A02_045/tokenizers/tokenizer-nanotron-ablations/da
   tokenizer_revision: null
 tokens:
   batch_accumulation_per_replica: 8
@@ -96,5 +89,5 @@ tokens:
   limit_val_batches: 0
   micro_batch_size: 32
   sequence_length: 2048
-  train_steps: 17500
+  train_steps: 17000
   val_check_interval: -1
